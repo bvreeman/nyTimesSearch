@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Navbar from "./components/Navbar";
+import Nav from "./components/Nav";
 import { BrowserRouter as Router } from "react-router-dom";
+import Search from "./components/Search";
+import Results from "./components/Results";
+import Saved from "./components/Saved";
 
 
 class App extends Component {
@@ -10,8 +12,11 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navbar />
-      </div> 
+          <Nav />
+          <Search />
+          <Results />
+          <Saved />
+        </div>
       </Router>
     );
   }

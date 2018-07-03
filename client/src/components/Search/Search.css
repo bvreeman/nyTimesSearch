@@ -16,3 +16,23 @@
 .submit {
     background-color: #0066cc;
 }
+
+.headline {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.snippet {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.url {
+    font-size: 16px; 
+    margin-top: 20px;
+}
+
+.deleteButton {
+    margin-top: 20px;
+}

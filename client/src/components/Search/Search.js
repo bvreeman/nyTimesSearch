@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import "./Search.css";
 import API from '../../utils/API';
+import { List, ListItem } from "../../components/List";
+import DeleteBtn from "../../components/DeleteBtn";
 
 class Search extends Component {
     state = {
@@ -51,6 +53,16 @@ class Search extends Component {
         }
     };
 
+    saveArticle = articleInfo => {
+        API.saveArticle(articleInfo)
+          .then(res => {
+            console.log('hey it saved');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }
+
     render() {
         return (
             <div className = "container">
@@ -81,7 +93,7 @@ class Search extends Component {
                                 <label>Start Year</label>
                                 <input 
                                     type="input" 
-                                    value={this.state.startDate}
+                                    // value={this.state.startDate}
                                     onChange={this.handleInputChange}
                                     className="form-control" 
                                     id="startYear" 
@@ -97,7 +109,7 @@ class Search extends Component {
                                 <label>Finish Year</label>
                                 <input 
                                     type="input" 
-                                    value={this.state.endDate}
+                                    // value={this.state.endDate}
                                     onChange={this.handleInputChange}
                                     className="form-control" 
                                     id="finishYear" 
@@ -119,8 +131,48 @@ class Search extends Component {
                         </form>
                     </div>
                 </div>
+                <div className="panel panel-default" id="panelBody">
+                    <div className="panel-heading">
+                        <h3>Results</h3>    
+                    </div>
+                    <div className="panel-body">
+                        <List>
+                            {console.log(this.state.articles.headline)}
+                            {this.state.articles.map(article => (
+                                <ListItem key={article._id}>
+                                    {console.log('check here', article)}
+                                    <div className='container'>
+                                        <div className='headline'>
+                                            {article.headline.main}
+                                        </div>
+                                        <div className='snippet'>
+                                            {article.snippet}
+                                        </div>
+                                        <div className='row'>
+                                            <div className='col-md-6 col-xs-12'>
+                                                <div className='url'>
+                                                    <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
+                                                    {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
+                                                </div>
+                                            </div>
+                                            <div className='col-md-6 col-xs-12 saveButton'>
+                                                <button className="btn btn-primary" style={{float: "right"}} onClick={() => this.saveArticle({
+                                                    title: article.headline.main,
+                                                    url: article.web_url, 
+                                                    date: article.pub_date
+                                                    })}> Save Article 
+                                                </button> 
+                                                {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </div>
+                </div>
             </div>
-        );
+        )
     }
 }
 

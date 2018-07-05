@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import "./Search.css";
 import API from '../../utils/API';
 import { List, ListItem } from "../../components/List";
-import DeleteBtn from "../../components/DeleteBtn";
+// import DeleteBtn from "../../components/DeleteBtn";
+import axios from "axios";
 
 class Search extends Component {
     state = {
@@ -15,10 +16,10 @@ class Search extends Component {
     getArticles = () => {
         let query = `${this.state.queryTerm}`;
         if (this.state.startDate) {
-          query = `${query}&begin_date=${this.state.startDate}`;
+          query = `${query}&begin_date=${this.state.startDate}0101`;
         }
         if (this.state.endDate) {
-          query = `${query}&end_date=${this.state.endDate}`;
+          query = `${query}&end_date=${this.state.endDate}1231`;
         }
     
         API.nytSearch(query)
@@ -53,15 +54,23 @@ class Search extends Component {
         }
     };
 
-    saveArticle = articleInfo => {
-        API.saveArticle(articleInfo)
-          .then(res => {
-            console.log('hey it saved');
-          })
-          .catch(err => {
-            console.log(err);
-          })
+     // when save button is clicked post the article to my db
+  saveArticle(article){
+    axios({
+      method:'post',
+      baseURL: '/api',
+      data: {
+          data: article
       }
+    }).then(response => {
+      // update state with each saved article
+      let newState = [];
+      newState.push(response.data);
+      this.setState({
+          savedData: (newState).concat(this.state.savedData)
+      })
+    })
+  }
 
     render() {
         return (
@@ -92,7 +101,7 @@ class Search extends Component {
                             <div className="form-group">
                                 <label>Start Year</label>
                                 <input 
-                                    type="input" 
+                                    type="number" 
                                     // value={this.state.startDate}
                                     onChange={this.handleInputChange}
                                     className="form-control" 
@@ -108,7 +117,7 @@ class Search extends Component {
                             <div className="form-group">
                                 <label>Finish Year</label>
                                 <input 
-                                    type="input" 
+                                    type="number" 
                                     // value={this.state.endDate}
                                     onChange={this.handleInputChange}
                                     className="form-control" 
@@ -137,33 +146,32 @@ class Search extends Component {
                     </div>
                     <div className="panel-body">
                         <List>
-                            {console.log(this.state.articles.headline)}
+                            {/* {console.log(this.state.articles.headline)} */}
                             {this.state.articles.map(article => (
                                 <ListItem key={article._id}>
-                                    {console.log('check here', article)}
-                                    <div className='container'>
-                                        <div className='headline'>
-                                            {article.headline.main}
-                                        </div>
-                                        <div className='snippet'>
-                                            {article.snippet}
-                                        </div>
-                                        <div className='row'>
-                                            <div className='col-md-6 col-xs-12'>
-                                                <div className='url'>
-                                                    <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
-                                                    {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
-                                                </div>
+                                    {/* {console.log('check here', article)} */}
+                                    <div className='col-md-12 headline'>
+                                        {article.headline.main}
+                                    </div>
+                                    <div className='col-md-12 snippet'>
+                                        {article.snippet}
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-md-6 col-xs-12'>
+                                            <div className='url'>
+                                                <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
+                                                {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
                                             </div>
-                                            <div className='col-md-6 col-xs-12 saveButton'>
-                                                <button className="btn btn-primary" style={{float: "right"}} onClick={() => this.saveArticle({
-                                                    title: article.headline.main,
-                                                    url: article.web_url, 
-                                                    date: article.pub_date
-                                                    })}> Save Article 
-                                                </button> 
-                                                {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}
-                                            </div>
+                                        </div>
+                                        <div className='col-md-6 col-xs-12 saveButton'>
+                                            <button className="btn btn-primary" onClick={() => this.saveArticle({
+                                                title: article.headline.main,
+                                                web_url: article.web_url, 
+                                                snippet: article.snippet,
+                                                pub_date: article.pub_date
+                                                })}> Save Article 
+                                            </button> 
+                                            {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}
                                         </div>
                                     </div>
                                 </ListItem>

@@ -3,7 +3,7 @@ import "./Search.css";
 import API from '../../utils/API';
 import { List, ListItem } from "../../components/List";
 // import DeleteBtn from "../../components/DeleteBtn";
-import axios from "axios";
+// import axios from "axios";
 // import Saved from "../Saved";
 class Search extends Component {
     state = {
@@ -18,42 +18,23 @@ class Search extends Component {
         this.loadSavedArticles();
     }
 
+    loadSavedArticles = () => {
+        API.getSavedArticles()
+        .then(res => {
+            this.setState({ savedArticles: res.data })
+        })
+        .catch(err => console.log(err))
+    };
+
     loadSearchedArticles = (queryTerm) => {
         this.setState({articles: []});
-        API.searchArticles(queryTerm)
-        .then(res => {
-            res.data.response.docs.forEach(nytArticle => {
-                let newArticle = {
-                    title : nytArticle.headline.main,
-                    date : nytArticle.pub_date,
-                    url : nytArticle.web_url
-                };
-                this.setState(prevState => ({
-                    articles: [...prevState.qrticles, newArticle]
-                }))
-            });
-        })
-        .catch(err => console.log(err));
+        this.getArticles(queryTerm)
     };
 
-    loadSavedArticles = () => {
-        API.getArticles()
-        .then(res => this.setState({ savedArticles: res.data }))
-        .catch(err => console.log(err));
-    };
-
-    getArticles = () => {
-        let query = `${this.state.queryTerm}`;
-        if (this.state.startDate) {
-          query = `${query}&begin_date=${this.state.startDate}0101`;
-        }
-        if (this.state.endDate) {
-          query = `${query}&end_date=${this.state.endDate}1231`;
-        }
-    
-        API.nytSearch(query)
+    getArticles = () => {    
+        API.nytSearch(this.state.queryTerm, this.state.startDate, this.state.endDate)
           .then(res => {
-            console.log(res);
+            // console.log(res);
             this.setState({
               articles: res.data.response.docs,
               queryTerm: '',
@@ -64,42 +45,53 @@ class Search extends Component {
           .catch(err => console.log(err));
     };
 
-    handleInputChange = event => {
-        const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        });
+    handleQueryTermsChange = event => {
+        this.setState({queryTerm: event.target.value});
+    };
+
+    handleStartDateChange = event => {
+        this.setState({startDate: event.target.value});
+    };
+
+    handleEndDateChange = event => {
+        this.setState({endDate: event.target.value});
     };
 
     handleFormSubmit = event => {
         event.preventDefault();
-        if (this.state.queryTerm) {
-        this.loadSearchedArticles(this.state.queryTerm);
-        // this.setState({
-        //     queryTerm: "",
-        //     startDate: '',
-        //     endDate: ''
-        // })
-        }
+        this.setState({ articles: [] })
+        this.getArticles();
     };
 
+    handleDelete = event => {
+        API.deleteArticle(event.target.id)
+        .then(res => {
+            this.getSavedArticles();
+        })
+    }
+
      // when save button is clicked post the article to my db
-  saveArticle(article){
-    axios({
-      method:'post',
-      baseURL: '/api',
-      data: {
-          data: article
-      }
-    }).then(response => {
-      // update state with each saved article
-      let newState = [];
-      newState.push(response.data);
-      this.setState({
-          savedData: (newState).concat(this.state.savedData)
-      })
+  saveArticle = event => {
+    // event.preventDefault();
+    this.state.articles.map((elem) => {
+        // console.log(elem)
+        // if(elem._id === event.target.id){
+            API.saveArticle({
+                headline: elem.headline.main,
+                web_url: elem.web_url,
+                snippet: elem.snippet,
+                pub_date: Date.now()
+            })
+            .then(res => {
+                console.log(res);
+                this.state.savedArticles.push(res.articleData)
+                this.getSavedArticles();
+            })
+        // }
+        .catch(err => console.log(err));
     })
   }
+
 
     render() {
         return (
@@ -115,14 +107,14 @@ class Search extends Component {
                                 <input 
                                     type="input" 
                                     value={this.state.queryTerm}
-                                    onChange={this.handleInputChange}
+                                    onChange={this.handleQueryTermsChange}
                                     name="queryTerm"
                                     className="form-control" 
-                                    id="topicInput" 
-                                    aria-describedby="topicHelp">
+                                    id="queryTermsInput" 
+                                    aria-describedby="queryTermsHelp">
                                 </input>
                                 <small 
-                                    id="topicHelp" 
+                                    id="queryTermsHelp" 
                                     className="form-text text-muted"
                                     >What topic do you want to search for?
                                     </small>
@@ -130,15 +122,15 @@ class Search extends Component {
                             <div className="form-group">
                                 <label>Start Year</label>
                                 <input 
-                                    type="number" 
-                                    // value={this.state.startDate}
-                                    onChange={this.handleInputChange}
+                                    type="text" 
+                                    value={this.state.startDate}
+                                    onChange={this.handleStartDateChange}
                                     className="form-control" 
-                                    id="startYear" 
-                                    aria-describedby="startYearHelp">
+                                    id="startDate" 
+                                    aria-describedby="startDateHelp">
                                 </input>
                                 <small 
-                                    id="startYearHelp" 
+                                    id="startDateHelp" 
                                     className="form-text text-muted"
                                     >What year do you want to start searching from?
                                 </small>
@@ -146,15 +138,15 @@ class Search extends Component {
                             <div className="form-group">
                                 <label>Finish Year</label>
                                 <input 
-                                    type="number" 
-                                    // value={this.state.endDate}
-                                    onChange={this.handleInputChange}
+                                    type="text" 
+                                    value={this.state.endDate}
+                                    onChange={this.handleEndDateChange}
                                     className="form-control" 
-                                    id="finishYear" 
-                                    aria-describedby="fnishYearHelp">
+                                    id="endDate" 
+                                    aria-describedby="endDateHelp">
                                 </input>
                                 <small 
-                                    id="finishYearHelp" 
+                                    id="endDateHelp" 
                                     className="form-text text-muted"
                                     >What year do you want your search to go until?
                                 </small>
@@ -174,26 +166,27 @@ class Search extends Component {
                         <h3>Results</h3>    
                     </div>
                     <div className="panel-body">
+                        {this.state.articles.length ? (
                         <List>
-                            {/* {console.log(this.state.articles.headline)} */}
-                            {this.state.articles.map((article, i) => (
-                                <ListItem key={article._id}>
+                            {/* {console.log()} */}
+                            {this.state.articles.map((articles, i) => (
+                                <ListItem key={articles._id}>
                                     {/* {console.log('check here', article)} */}
                                     <div className='col-md-12 headline'>
-                                        {article.headline.main}
+                                        {articles.headline.main}
                                     </div>
                                     <div className='col-md-12 snippet'>
-                                        {article.snippet}
+                                        {articles.snippet}
                                     </div>
                                     <div className='row'>
                                         <div className='col-md-6 col-xs-12'>
                                             <div className='url'>
-                                                <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
+                                                <button><a target="_blank" href={articles.web_url}>Full Article Here</a></button>
                                                 {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
                                             </div>
                                         </div>
                                         <div className='col-md-6 col-xs-12 saveButton'>
-                                            <button className="btn btn-primary" onClick={() => {API.saveArticle(this.state.articles[i])}}
+                                            <button id={this.id} className="btn btn-primary" onClick={this.saveArticle}
                                                 > Save Article 
                                             </button> 
                                             {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}
@@ -202,26 +195,29 @@ class Search extends Component {
                                 </ListItem>
                             ))}
                         </List>
+                        ) : (
+                            <h3 className="noResults">No Results to Display</h3>
+                        )}
                     </div>
                 </div>
                 <div className="panel panel-default" id="panelBody">
                     <div className="panel-heading">
-                        <h3>Saved</h3>    
+                        <h3>To Read Later</h3>    
                     </div>
                     <div className="panel-body results">
-                        {this.props.savedArticles.length ? (
+                        {this.state.savedArticles.length ? (
                             <List>
-                                {this.state.savedArticles.map(savedArticle => (
-                                    <ListItem key={savedArticle._id}>
+                                {this.state.savedArticles.map(article => (
+                                    <ListItem key={article._id}>
                                         <div className='col-md-12 headline'>
-                                            {savedArticle.headline.main}
+                                            {article.headline.main}
                                         </div>
                                         <div className='col-md-12 snippet'>
-                                            {savedArticle.snippet}
+                                            {article.snippet}
                                         </div>
                                         <div className='col-md-12'>
                                             <div className='url'>
-                                                <button><a target="_blank" href={savedArticle.web_url}>Full Article Here</a></button>
+                                                <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
                                                 {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
                                             </div>
                                         </div>
@@ -229,8 +225,8 @@ class Search extends Component {
                                 ))}
                             </List>
                         ) : (
-                            <h3>No Results to Display</h3>
-                        )}}
+                            <h3 className="noResults">No Results to Display</h3>
+                        )}
                     </div>
                 </div>
             </div>

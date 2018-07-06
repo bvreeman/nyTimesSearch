@@ -1,19 +1,14 @@
 import axios from "axios";
 require('dotenv').config()
 
-const APIKEY = '402206c1ad1e4b02a94655a84f0d41ce'
-
-const queryUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=' + APIKEY + '&q=';
-
-export default {
-  nytSearch: function(queryTerms) {
-    return axios.get(`${queryUrl}${queryTerms}`);
+const API = {
+  nytSearch: function(queryTerms, startDate, endDate) {
+    const APIKEY = '402206c1ad1e4b02a94655a84f0d41ce'
+    const queryUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=' + APIKEY + "&q=" + queryTerms + "&begin_date=" + startDate + "0101&end_date=" + endDate + "1231";
+    return axios.get(queryUrl);
   },
-  getArticles: function() {
-    return axios.get('/api/articles/');
-  },
-  getARticle: function (id) {
-    return axios.get("/api/articles/" + id);
+  getSavedArticles: function () {
+    return axios.get("/api/articles/");
   },
   deleteArticle: function(id) {
     return axios.delete('/api/articles/' + id);
@@ -22,3 +17,5 @@ export default {
     return axios.post('/api/articles', articleData);
   }
 };
+
+export default API;

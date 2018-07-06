@@ -9,13 +9,16 @@ export default {
   nytSearch: function(queryTerms) {
     return axios.get(`${queryUrl}${queryTerms}`);
   },
-  getSavedArticles: function() {
-    return axios.get('/api/saved/');
+  getArticles: function() {
+    return axios.get('/api/articles/');
+  },
+  getARticle: function (id) {
+    return axios.get("/api/articles/" + id);
   },
   deleteArticle: function(id) {
-    return axios.delete('/api/saved/' + id);
+    return axios.delete('/api/articles/' + id);
   },
   saveArticle: function(articleData) {
-    return axios.post('/api/saved', articleData);
+    return axios.post('/api/articles', articleData);
   }
 };

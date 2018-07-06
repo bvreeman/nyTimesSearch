@@ -4,13 +4,42 @@ import API from '../../utils/API';
 import { List, ListItem } from "../../components/List";
 // import DeleteBtn from "../../components/DeleteBtn";
 import axios from "axios";
-
+// import Saved from "../Saved";
 class Search extends Component {
     state = {
         articles: [],
+        savedArticles: [],
         queryTerm: '',
         startDate: '',
         endDate: ''
+    };
+
+    componentDidMount() {
+        this.loadSavedArticles();
+    }
+
+    loadSearchedArticles = (queryTerm) => {
+        this.setState({articles: []});
+        API.searchArticles(queryTerm)
+        .then(res => {
+            res.data.response.docs.forEach(nytArticle => {
+                let newArticle = {
+                    title : nytArticle.headline.main,
+                    date : nytArticle.pub_date,
+                    url : nytArticle.web_url
+                };
+                this.setState(prevState => ({
+                    articles: [...prevState.qrticles, newArticle]
+                }))
+            });
+        })
+        .catch(err => console.log(err));
+    };
+
+    loadSavedArticles = () => {
+        API.getArticles()
+        .then(res => this.setState({ savedArticles: res.data }))
+        .catch(err => console.log(err));
     };
 
     getArticles = () => {
@@ -38,19 +67,19 @@ class Search extends Component {
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
-        [name]: value
+            [name]: value
         });
     };
 
     handleFormSubmit = event => {
         event.preventDefault();
         if (this.state.queryTerm) {
-        this.getArticles();
-        this.setState({
-            queryTerm: "",
-            startDate: '',
-            endDate: ''
-        })
+        this.loadSearchedArticles(this.state.queryTerm);
+        // this.setState({
+        //     queryTerm: "",
+        //     startDate: '',
+        //     endDate: ''
+        // })
         }
     };
 
@@ -147,7 +176,7 @@ class Search extends Component {
                     <div className="panel-body">
                         <List>
                             {/* {console.log(this.state.articles.headline)} */}
-                            {this.state.articles.map(article => (
+                            {this.state.articles.map((article, i) => (
                                 <ListItem key={article._id}>
                                     {/* {console.log('check here', article)} */}
                                     <div className='col-md-12 headline'>
@@ -164,12 +193,8 @@ class Search extends Component {
                                             </div>
                                         </div>
                                         <div className='col-md-6 col-xs-12 saveButton'>
-                                            <button className="btn btn-primary" onClick={() => this.saveArticle({
-                                                title: article.headline.main,
-                                                web_url: article.web_url, 
-                                                snippet: article.snippet,
-                                                pub_date: article.pub_date
-                                                })}> Save Article 
+                                            <button className="btn btn-primary" onClick={() => {API.saveArticle(this.state.articles[i])}}
+                                                > Save Article 
                                             </button> 
                                             {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}
                                         </div>
@@ -177,6 +202,35 @@ class Search extends Component {
                                 </ListItem>
                             ))}
                         </List>
+                    </div>
+                </div>
+                <div className="panel panel-default" id="panelBody">
+                    <div className="panel-heading">
+                        <h3>Saved</h3>    
+                    </div>
+                    <div className="panel-body results">
+                        {this.props.savedArticles.length ? (
+                            <List>
+                                {this.state.savedArticles.map(savedArticle => (
+                                    <ListItem key={savedArticle._id}>
+                                        <div className='col-md-12 headline'>
+                                            {savedArticle.headline.main}
+                                        </div>
+                                        <div className='col-md-12 snippet'>
+                                            {savedArticle.snippet}
+                                        </div>
+                                        <div className='col-md-12'>
+                                            <div className='url'>
+                                                <button><a target="_blank" href={savedArticle.web_url}>Full Article Here</a></button>
+                                                {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
+                                            </div>
+                                        </div>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        ) : (
+                            <h3>No Results to Display</h3>
+                        )}}
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import Nav from "./components/Nav";
 import { BrowserRouter as Router } from "react-router-dom";
 import Search from "./components/Search";
 // import Results from "./components/Results";
-import Saved from "./components/Saved";
+// import Saved from "./components/Saved";
 
 
 class App extends Component {
@@ -23,7 +23,7 @@ class App extends Component {
           <Nav />
           <Search />
           {/* <Results /> */}
-          <Saved />
+          {/* <Saved /> */}
         </div>
       </Router>
     );

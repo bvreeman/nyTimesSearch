@@ -184,14 +184,13 @@ class Search extends Component {
                                         <div className='col-md-6 col-xs-12'>
                                             <div className='url'>
                                                 <button><a target="_blank" href={articles.web_url}>Full Article Here</a></button>
-                                                {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
                                             </div>
                                         </div>
                                         <div className='col-md-6 col-xs-12 saveButton'>
                                             <button id={articles._id} className="btn btn-primary" onClick={this.saveArticle}
                                                 > Save Article 
                                             </button> 
-                                            {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}
+                                            <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
                                         </div>
                                     </div>
                                 </ListItem>
@@ -220,7 +219,6 @@ class Search extends Component {
                                         <div className='col-md-12'>
                                             <div className='url'>
                                                 <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
-                                                {/* {<a target="_blank" href={article.web_url}>{article.web_url}</a>} */}
                                             </div>
                                         </div>
                                     </ListItem>

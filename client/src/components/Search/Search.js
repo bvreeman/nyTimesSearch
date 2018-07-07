@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./Search.css";
 import API from '../../utils/API';
 import { List, ListItem } from "../../components/List";
-// import DeleteBtn from "../../components/DeleteBtn";
+import DeleteBtn from "../../components/DeleteBtn";
 // import axios from "axios";
 // import Saved from "../Saved";
 class Search extends Component {
@@ -73,7 +73,7 @@ class Search extends Component {
      // when save button is clicked post the article to my db
   saveArticle = (event) => {
     event.preventDefault();
-    this.state.articles.map((elem) => {
+    this.state.articles.forEach((elem) => {
         // console.log('test', elem)
         if(elem._id === event.target.id){
             console.log('event', event.target.id)
@@ -87,7 +87,7 @@ class Search extends Component {
             .then(res => {
                 console.log('this is res', res);
                 this.state.savedArticles.push(res.articleData)
-                this.getSavedArticles();
+                API.getSavedArticles();
             })
             .catch(err => console.log(err));
         } 
@@ -190,7 +190,6 @@ class Search extends Component {
                                             <button id={articles._id} className="btn btn-primary" onClick={this.saveArticle}
                                                 > Save Article 
                                             </button> 
-                                            <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
                                         </div>
                                     </div>
                                 </ListItem>
@@ -211,14 +210,18 @@ class Search extends Component {
                                 {this.state.savedArticles.map(article => (
                                     <ListItem key={article._id}>
                                         <div className='col-md-12 headline'>
-                                            {article.headline.main}
+                                            {article.headline}
                                         </div>
                                         <div className='col-md-12 snippet'>
                                             {article.snippet}
                                         </div>
-                                        <div className='col-md-12'>
-                                            <div className='url'>
+                                        <div className='row'>
+                                            <div className='col-md-6 col-xs-12 url'>
                                                 <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
+                                            </div>
+                                            <div className='col-md-6 col-xs-12 delete'>
+                                                <DeleteBtn onClick={() => this.handleDelete(article._id)}/>
+                                                {/* <DeleteBtn /> */}
                                             </div>
                                         </div>
                                     </ListItem>

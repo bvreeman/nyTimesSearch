@@ -40,10 +40,6 @@
     text-align: center;
 }
 
-.deleteButton {
-    margin-top: 20px;
-}
-
 .saveButton {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -52,4 +48,9 @@
 
 .noResults {
     text-align: center;
+}
+
+.delete {
+    text-align: center;
+    margin-top: 10px;
 }

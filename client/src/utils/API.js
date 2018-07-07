@@ -8,7 +8,7 @@ const API = {
     return axios.get(queryUrl);
   },
   getSavedArticles: function () {
-    return axios.get("/api/articles/");
+    return axios.get("/api/articles");
   },
   deleteArticle: function(id) {
     return axios.delete('/api/articles/' + id);

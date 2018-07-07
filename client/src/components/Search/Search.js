@@ -71,24 +71,26 @@ class Search extends Component {
     }
 
      // when save button is clicked post the article to my db
-  saveArticle = event => {
-    // event.preventDefault();
+  saveArticle = (event) => {
+    event.preventDefault();
     this.state.articles.map((elem) => {
-        // console.log(elem)
-        // if(elem._id === event.target.id){
+        // console.log('test', elem)
+        if(elem._id === event.target.id){
+            console.log('event', event.target.id)
+            console.log('elem', elem._id)
             API.saveArticle({
                 headline: elem.headline.main,
                 web_url: elem.web_url,
                 snippet: elem.snippet,
-                pub_date: Date.now()
+                pub_date: elem.pub_date
             })
             .then(res => {
-                console.log(res);
+                console.log('this is res', res);
                 this.state.savedArticles.push(res.articleData)
                 this.getSavedArticles();
             })
-        // }
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
+        } 
     })
   }
 
@@ -170,7 +172,7 @@ class Search extends Component {
                         <List>
                             {/* {console.log()} */}
                             {this.state.articles.map((articles, i) => (
-                                <ListItem key={articles._id}>
+                                <ListItem key={articles._id} id={articles._id}>
                                     {/* {console.log('check here', article)} */}
                                     <div className='col-md-12 headline'>
                                         {articles.headline.main}
@@ -186,7 +188,7 @@ class Search extends Component {
                                             </div>
                                         </div>
                                         <div className='col-md-6 col-xs-12 saveButton'>
-                                            <button id={this.id} className="btn btn-primary" onClick={this.saveArticle}
+                                            <button id={articles._id} className="btn btn-primary" onClick={this.saveArticle}
                                                 > Save Article 
                                             </button> 
                                             {/* <DeleteBtn onClick={() => this.deleteArticle(article._id)} /> */}

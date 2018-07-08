@@ -4,6 +4,13 @@ require('dotenv').config()
 const API = {
   nytSearch: function(queryTerms, startDate, endDate) {
     const APIKEY = '402206c1ad1e4b02a94655a84f0d41ce'
+    if (startDate === '') {
+      startDate = '2018'
+    } if (endDate === '') {
+      endDate = Number(startDate)+1
+    }
+    console.log(startDate)
+    console.log(endDate)
     const queryUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=' + APIKEY + "&q=" + queryTerms + "&begin_date=" + startDate + "0101&end_date=" + endDate + "1231";
     return axios.get(queryUrl);
   },

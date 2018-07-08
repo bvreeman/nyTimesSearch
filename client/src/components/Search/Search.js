@@ -91,7 +91,7 @@ class Search extends Component {
                 API.getSavedArticles();
             })
             .catch(err => console.log(err));
-        } 
+        }
     })
   }
 
@@ -229,7 +229,7 @@ class Search extends Component {
                                 ))}
                             </List>
                         ) : (
-                            <h3 className="noResults">No Results to Display</h3>
+                            <h3 className="noResults">No Saved Articles to Display</h3>
                         )}
                     </div>
                 </div>

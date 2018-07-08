@@ -63,10 +63,11 @@ class Search extends Component {
         this.getArticles();
     };
 
-    handleDelete = event => {
-        API.deleteArticle(event.target.id)
+    handleDelete = id => {
+        console.log(id);
+        API.deleteArticle(id)
         .then(res => {
-            this.getSavedArticles();
+            this.loadSavedArticles();
         })
     }
 

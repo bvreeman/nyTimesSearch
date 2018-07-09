@@ -222,7 +222,6 @@ class Search extends Component {
                                             </div>
                                             <div className='col-md-6 col-xs-12 delete'>
                                                 <DeleteBtn onClick={() => this.handleDelete(article._id)}/>
-                                                {/* <DeleteBtn /> */}
                                             </div>
                                         </div>
                                     </ListItem>

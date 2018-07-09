@@ -64,7 +64,7 @@ class Search extends Component {
     };
 
     handleDelete = id => {
-        console.log(id);
+        // console.log(id);
         API.deleteArticle(id)
         .then(res => {
             this.loadSavedArticles();
@@ -77,8 +77,8 @@ class Search extends Component {
     this.state.articles.forEach((elem) => {
         // console.log('test', elem)
         if(elem._id === event.target.id){
-            console.log('event', event.target.id)
-            console.log('elem', elem._id)
+            // console.log('event', event.target.id)
+            // console.log('elem', elem._id)
             API.saveArticle({
                 headline: elem.headline.main,
                 web_url: elem.web_url,
@@ -86,9 +86,9 @@ class Search extends Component {
                 pub_date: elem.pub_date
             })
             .then(res => {
-                console.log('this is res', res);
+                // console.log('this is res', res);
                 this.state.savedArticles.push(res.articleData)
-                API.getSavedArticles();
+                this.loadSavedArticles();
             })
             .catch(err => console.log(err));
         }
@@ -172,7 +172,7 @@ class Search extends Component {
                         {this.state.articles.length ? (
                         <List>
                             {/* {console.log()} */}
-                            {this.state.articles.map((articles, i) => (
+                            {this.state.articles.map((articles) => (
                                 <ListItem key={articles._id} id={articles._id}>
                                     {/* {console.log('check here', article)} */}
                                     <div className='col-md-12 headline'>

@@ -1,8 +1,11 @@
 {
   "name": "ny_times_search",
   "version": "0.1.0",
+  "engines": {
+    "node": "8.11.1"
+  },
   "private": true,
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "server": "node server.js",
     "client": "node scripts/start-client.js",

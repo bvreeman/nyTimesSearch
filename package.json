@@ -4,7 +4,6 @@
   "engines": {
     "node": "8.11.1"
   },
-  "root": "build/",
   "private": true,
   "main": "server.js",
   "scripts": {
@@ -14,7 +13,13 @@
     "build": "node scripts/build.js",
     "seed": "node scripts/seedDB.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "installDeps": "yarn && cd client && yarn"
+    "installDeps": "yarn && cd client && yarn",
+    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bvreeman/nyTimesSearch"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +27,7 @@
     "concurrently": "^3.5.0",
     "nodemon": "^1.17.5"
   },
+  "homepage": "https://github.com/bvreeman/nyTimesSearch",
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",

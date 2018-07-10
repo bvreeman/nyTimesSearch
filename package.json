@@ -2,7 +2,7 @@
   "name": "ny_times_search",
   "version": "0.1.0",
   "private": true,
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "server": "node server.js",
     "client": "node scripts/start-client.js",

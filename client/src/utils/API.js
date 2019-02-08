@@ -3,13 +3,13 @@ require('dotenv').config()
 
 const API = {
   nytSearch: function(queryTerms, startDate, endDate) {
-    const APIKEY = '402206c1ad1e4b02a94655a84f0d41ce'
+    const APIKEY = process.env.REACT_APP_APIKEY
     // this is set up so there is a default year when searching. If no value is entered
     // for either, it starts at 2018 and the endDate is automatically set to be
     // one year later than the startDate. If a startDate is entered, but an
     // endDate isn't, the endDate is still set to go one year after the startDate.
     if (startDate === '') {
-      startDate = '2018'
+      startDate = '2019'
     // Also set it so a date before the StartDate could not be set. It will 
     // still start one year after the startDate
     } if (endDate === '' || Number(endDate) < Number(startDate)) {

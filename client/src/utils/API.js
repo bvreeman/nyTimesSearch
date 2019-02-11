@@ -8,7 +8,6 @@ const API = {
       console.log('production', APIKEY)
     } else if (process.env.NODE_ENV === 'development') {
       console.log('development', APIKEY)
-      console.log('test')
     }
     // this is set up so there is a default year when searching. If no value is entered
     // for either, it starts at 2018 and the endDate is automatically set to be

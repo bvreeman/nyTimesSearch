@@ -4,6 +4,11 @@ import axios from "axios";
 const API = {
   nytSearch: function(queryTerms, startDate, endDate) {
     const APIKEY = process.env.REACT_APP_APIKEY
+    if (process.env.NODE_ENV === 'production') {
+      console.log('production', APIKEY)
+    } else if (process.env.NODE_ENV === 'development') {
+      console.log('development', APIKEY)
+    }
     // this is set up so there is a default year when searching. If no value is entered
     // for either, it starts at 2018 and the endDate is automatically set to be
     // one year later than the startDate. If a startDate is entered, but an

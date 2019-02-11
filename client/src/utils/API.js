@@ -15,8 +15,8 @@ const API = {
     } if (endDate === '' || Number(endDate) < Number(startDate)) {
       endDate = Number(startDate)+1
     }
-    console.log(startDate)
-    console.log(endDate)
+    // console.log(startDate)
+    // console.log(endDate)
     const queryUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + queryTerms + "&api-key=" + APIKEY + "&begin_date=" + startDate + "0101&end_date=" + endDate + "1231";
     return axios.get(queryUrl);
   },

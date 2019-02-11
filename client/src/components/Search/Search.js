@@ -184,7 +184,7 @@ class Search extends Component {
                                     <div className='row'>
                                         <div className='col-md-6 col-xs-12'>
                                             <div className='url'>
-                                                <button><a target="_blank" href={articles.web_url}>Full Article Here</a></button>
+                                                <button><a target="_blank" rel="noopener noreferrer" href={articles.web_url}>Full Article Here</a></button>
                                             </div>
                                         </div>
                                         <div className='col-md-6 col-xs-12 saveButton'>
@@ -218,7 +218,7 @@ class Search extends Component {
                                         </div>
                                         <div className='row'>
                                             <div className='col-md-6 col-xs-12 url'>
-                                                <button><a target="_blank" href={article.web_url}>Full Article Here</a></button>
+                                                <button><a target="_blank" rel="noopener noreferrer" href={article.web_url}>Full Article Here</a></button>
                                             </div>
                                             <div className='col-md-6 col-xs-12 delete'>
                                                 <DeleteBtn onClick={() => this.handleDelete(article._id)}/>

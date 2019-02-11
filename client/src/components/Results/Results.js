@@ -24,7 +24,7 @@ class Results extends Component {
                 </div>
                 <div className="panel-body">
                     <div className="results">
-                    {console.log(this.state.article)}
+                    {/* {console.log(this.state.article)} */}
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ const Saved = () => (
                 <h3>Saved</h3>    
             </div>
             <div className="panel-body results">
-                {console.log('saved tab', this.props)}
+                {/* {console.log('saved tab', this.props)} */}
             </div>
         </div>
     </div>

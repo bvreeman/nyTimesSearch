@@ -23,7 +23,7 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://github.com/bvreeman/nyTimesSearch#readme",
+  "homepage": "https://ny-times-1123.herokuapp.com/",
   "devDependencies": {
     "concurrently": "^4.1.0",
     "nodemon": "^1.17.5"

@@ -1,0 +1,4 @@
++ react-scripts@1.1.5
+added 11 packages from 7 contributors, removed 15 packages, updated 28 packages and audited 14629 packages in 35.687s
+found 1 high severity vulnerability
+  run `npm audit fix` to fix them, or `npm audit` for details

@@ -5,12 +5,14 @@ const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 const path = require("path");
+const compression = require('compression');
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+app.use(compression());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -18,6 +20,11 @@ if (process.env.NODE_ENV === "production") {
 }
 // Add routes, both API and view
 app.use('/', routes);
+
+// If no API routes are hit, send the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/build"));
+});
 
 mongoose.Promise = global.Promise;
 

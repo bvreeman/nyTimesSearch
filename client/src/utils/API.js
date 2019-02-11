@@ -1,5 +1,5 @@
 import axios from "axios";
-require('dotenv').config()
+// require('dotenv').config()
 
 const API = {
   nytSearch: function(queryTerms, startDate, endDate) {

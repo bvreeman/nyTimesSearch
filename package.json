@@ -1,12 +1,14 @@
 {
   "name": "ny_times_search",
   "version": "0.1.0",
+  "private": true,
+  "main": "server.js",
+  "homepage": "https://ny-times-1123.herokuapp.com/",
   "engines": {
     "node": "8.11.1",
     "npm": "6.7.0"
   },
-  "private": true,
-  "main": "server.js",
+
   "scripts": {
     "dev": "node server.js",
     "client": "node scripts/start-client.js",
@@ -23,7 +25,6 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://ny-times-1123.herokuapp.com/",
   "devDependencies": {
     "concurrently": "^4.1.0",
     "nodemon": "^1.17.5"

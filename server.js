@@ -34,6 +34,6 @@ const dbUri = process.env.MONGODB_URI || "mongodb://localhost:27017/nytreact";
 mongoose.connect(dbUri, {useNewUrlParser: true}).then(() => console.log('connected to DB!')).catch((err) => console.log(err));
 
 // Start the API server
-app.listen(PORT, function() {
+app.listen(PORT, () => {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
 });

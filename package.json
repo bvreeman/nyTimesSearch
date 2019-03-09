@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "main": "server.js",
-  "homepage": "https://ny-times-1123.herokuapp.com/",
+  "homepage": "https://github.com/bvreeman/nyTimesSearch",
   "engines": {
-    "node": "8.11.1",
-    "npm": "6.7.0"
+    "node": "8.11.1"
   },
 
   "scripts": {

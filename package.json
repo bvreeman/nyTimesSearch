@@ -7,7 +7,6 @@
   "engines": {
     "node": "8.11.1"
   },
-
   "scripts": {
     "dev": "node server.js",
     "client": "node scripts/start-client.js",
@@ -25,15 +24,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "nodemon": "^1.17.5"
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "^1.17.2",
-    "dotenv": "^6.0.0",
-    "express": "^4.15.4",
-    "mongoose": "^5.4.11",
-    "react-scripts": "^2.1.5"
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.4",
+    "react-scripts": "^3.0.1"
   }
 }
